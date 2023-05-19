@@ -5,19 +5,22 @@ console.log('Iniciando o processo de implantação no GitHub Pages...');
 // Compila o projeto React
 execSync('npm run build', { stdio: 'inherit' });
 
-// Cria uma nova branch chamada "gh-pages"
-execSync('git checkout gh-pages');
+// Move para o diretório "build"
+process.chdir('build');
 
-// Remove os arquivos existentes na branch "gh-pages"
-execSync('git rm -rf .');
+// Inicializa o repositório Git
+execSync('git init');
 
-// Move os arquivos da pasta "build" para o diretório raiz da branch "gh-pages"
-execSync('move /Y build\\* .');
+// Adiciona todos os arquivos para o Git
+execSync('git add .');
 
 // Faz o commit das mudanças
-execSync('git add .');
 execSync('git commit -m "Deploy no GitHub Pages"');
-execSync('git push');
+
+// Configura o repositório remoto
+execSync('git remote add origin https://github.com/ivanildodev/me'); // Substitua "REPO_URL" pela URL do seu repositório
+
+// Faz o push para a branch "gh-pages" do repositório remoto
+execSync('git push -f origin HEAD:gh-pages');
 
 console.log('Implantação concluída com sucesso!');
-
